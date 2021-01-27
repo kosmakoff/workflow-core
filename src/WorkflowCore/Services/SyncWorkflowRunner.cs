@@ -35,7 +35,7 @@ namespace WorkflowCore.Services
         public async Task<WorkflowInstance> RunWorkflowSync<TData>(string workflowId, int version, TData data, string reference, TimeSpan timeOut, bool persistSate = true)
             where TData : new()
         {
-            var def = _registry.GetDefinition(workflowId, version);
+            var def = await _registry.GetDefinition(workflowId, version);
             if (def == null)
             {
                 throw new WorkflowNotRegisteredException(workflowId, version);

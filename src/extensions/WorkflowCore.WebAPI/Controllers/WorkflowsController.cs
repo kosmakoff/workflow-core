@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -44,13 +45,13 @@ namespace WorkflowCore.WebAPI.Controllers
         }
 
         [HttpPost("{id}")]
-        [HttpPost("{id}/{version}")]        
-        public async Task<IActionResult> Post(string id, int? version, string reference, [FromBody]JObject data)
+        [HttpPost("{id}/{version}")]
+        public async Task<IActionResult> Post(string id, int? version, string reference, [FromBody] JObject data, CancellationToken cancellationToken)
         {
-            string workflowId = null;            
-            var def = _registry.GetDefinition(id, version);
+            string workflowId = null;
+            var def = await _registry.GetDefinition(id, version, cancellationToken);
             if (def == null)
-                return BadRequest(String.Format("Workflow defintion {0} for version {1} not found", id, version));
+                return BadRequest(String.Format("Workflow definition {0} for version {1} not found", id, version));
             if ((data != null) && (def.DataType != null))
             {
                 var dataStr = JsonConvert.SerializeObject(data);
@@ -61,7 +62,7 @@ namespace WorkflowCore.WebAPI.Controllers
             {
                 workflowId = await _workflowHost.StartWorkflow(id, version, null, reference);
             }
-            
+
             return Ok(workflowId);
         }
 

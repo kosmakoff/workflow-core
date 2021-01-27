@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<ILifeCycleEventHub>(options.EventHubFactory);
             services.AddSingleton<ISearchIndex>(options.SearchIndexFactory);
 
-            services.AddSingleton<IWorkflowRegistry, WorkflowRegistry>();
+            services.AddSingleton<IWorkflowRegistry, InMemoryWorkflowRegistry>();
             services.AddSingleton<WorkflowOptions>(options);
             services.AddSingleton<ILifeCycleEventPublisher, LifeCycleEventPublisher>();
 

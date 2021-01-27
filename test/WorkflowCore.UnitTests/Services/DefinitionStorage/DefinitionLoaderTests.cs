@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 using WorkflowCore.Services.DefinitionStorage;
@@ -31,9 +32,9 @@ namespace WorkflowCore.UnitTests.Services.DefinitionStorage
         {
             _subject.LoadDefinition("{\"Id\": \"HelloWorld\", \"Version\": 1, \"Steps\": []}", Deserializers.Json);
 
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Id == "HelloWorld"))).MustHaveHappened();
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Version == 1))).MustHaveHappened();
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.DataType == typeof(object)))).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Id == "HelloWorld"), A<CancellationToken>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Version == 1), A<CancellationToken>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.DataType == typeof(object)), A<CancellationToken>.Ignored)).MustHaveHappened();
         }
 
         [Fact(DisplayName = "Should parse definition")]
@@ -41,10 +42,10 @@ namespace WorkflowCore.UnitTests.Services.DefinitionStorage
         {
             _subject.LoadDefinition(TestAssets.Utils.GetTestDefinitionJson(), Deserializers.Json);
 
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Id == "Test"))).MustHaveHappened();
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Version == 1))).MustHaveHappened();
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.DataType == typeof(CounterBoard)))).MustHaveHappened();
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(MatchTestDefinition, ""))).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Id == "Test"), A<CancellationToken>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Version == 1), A<CancellationToken>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.DataType == typeof(CounterBoard)), A<CancellationToken>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(MatchTestDefinition, ""), A<CancellationToken>.Ignored)).MustHaveHappened();
         }
 
 
@@ -53,10 +54,10 @@ namespace WorkflowCore.UnitTests.Services.DefinitionStorage
         {
             _subject.LoadDefinition(TestAssets.Utils.GetTestDefinitionDynamicJson(), Deserializers.Json);
 
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Id == "Test"))).MustHaveHappened();
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Version == 1))).MustHaveHappened();
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.DataType == typeof(DynamicData)))).MustHaveHappened();
-            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(MatchTestDefinition, ""))).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Id == "Test"), A<CancellationToken>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.Version == 1), A<CancellationToken>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(x => x.DataType == typeof(DynamicData)), A<CancellationToken>.Ignored)).MustHaveHappened();
+            A.CallTo(() => _registry.RegisterWorkflow(A<WorkflowDefinition>.That.Matches(MatchTestDefinition, ""), A<CancellationToken>.Ignored)).MustHaveHappened();
         }
 
         [Fact(DisplayName = "Should throw error for bad input property name on step")]

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using WorkflowCore.Interface;
@@ -338,7 +339,7 @@ namespace WorkflowCore.UnitTests.Services
 
         private void Given1StepWorkflow(WorkflowStep step1, string id, int version)
         {
-            A.CallTo(() => Registry.GetDefinition(id, version)).Returns(new WorkflowDefinition()
+            A.CallTo(() => Registry.GetDefinition(id, version, A<CancellationToken>.Ignored)).Returns(new WorkflowDefinition()
             {
                 Id = id,
                 Version = version,

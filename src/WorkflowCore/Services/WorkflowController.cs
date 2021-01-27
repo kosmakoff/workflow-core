@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,8 +54,7 @@ namespace WorkflowCore.Services
         public async Task<string> StartWorkflow<TData>(string workflowId, int? version, TData data = null, string reference=null)
             where TData : class, new()
         {
-
-            var def = _registry.GetDefinition(workflowId, version);
+            var def = await _registry.GetDefinition(workflowId, version);
             if (def == null)
             {
                 throw new WorkflowNotRegisteredException(workflowId, version);
